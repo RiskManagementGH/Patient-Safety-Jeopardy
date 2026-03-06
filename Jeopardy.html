@@ -643,11 +643,11 @@ const CATEGORIES = [
  {
    name: "Infection Control",
    questions: [
-     { points: 200, q: "What is the most effective procedure for preventing infection?", answers: ["", "", "Hand Sanitizer", "Washing hands with soap and water"], correct: 4 },
-     { points: 400, q: "Items like door handles, waiting room chairs, and check in counters are considered this type of surface", answers: ["", "", "", ""], correct: 2 },
-     { points: 600, q: "PPE may be donned in any order but _____ must be donned last", answers: ["", "Gloves", "", ""], correct: 2 },
-     { points: 800, q: "Shared equipment like blood pressure cuffs, stethoscopes, and exam chairs should be cleaned how often?", answers: ["", "", "", ""], correct: 3 },
-     { points: 1000, q: "The sharps container must be changed out/replaced when it reaches the ____", answers: ["", "", "", ""], correct: 1 },
+     { points: 200, q: "What is the most effective procedure for preventing infection?", answers: ["Wearing gloves", "Avoiding contact with patients", "Hand Sanitizer", "Washing hands with soap and water"], correct: 3 },
+     { points: 400, q: "Items like door handles, waiting room chairs, and check in counters are considered this type of surface", answers: ["Sterile surfaces", "Semi-critical surfaces", "High-touch surfaces", "Critical surfaces"], correct: 2 },
+     { points: 600, q: "PPE may be donned in any order but _____ must be donned last", answers: ["Gown", "Gloves", "Mask", "Face shield"], correct: 1 },
+     { points: 800, q: "Shared equipment like blood pressure cuffs, stethoscopes, and exam chairs should be cleaned how often?", answers: ["After each patient use", "Once a day", "Once a week", "Only when visibly dirty"], correct: 0 },
+     { points: 1000, q: "The sharps container must be changed out/replaced when it reaches ____", answers: ["Half full", "Three-Quarters Full", "Full", "Empty "], correct: 1 },
    ]
  },
  {
@@ -655,28 +655,28 @@ const CATEGORIES = [
    questions: [
      { points: 200, q: "Before giving a medication, staff should confirm a patient using at least two of these", answers: ["", "", "", ""], correct: 1 },
      { points: 400, q: "The 'Five Rights' of medication administration include right patient, drug, dose, route, and what else?", answers: ["Right color", "Right time", "Right temperature", "Right physician"], correct: 1 },
-     { points: 600, q: "Medications left unattended in public or patient areas should be: ", answers: ["", "", "", ""], correct: 2 },
-     { points: 800, q: "", answers: ["", "", "", ""], correct: 1 },
+     { points: 600, q: "Medications left unattended in public or patient areas should be: ", answers: ["Left for the patient to take", "", "Ignored if expiration date is near", ""], correct: 2 },
+     { points: 800, q: "Which of the following practices is most important for ensuring medication safety for all patients?", answers: ["Administering medications as quickly as possible", "Always checking the 'Five Rights' of medication administration before giving a drug", "Relying on memory for patient allergies and doses", "Placing medications in the waiting area for patients to take themselves"], correct: 1 },
      { points: 1000, q: "What is 'medication reconciliation' primarily designed to prevent?", answers: ["Drug diversion by staff", "Discrepancies between medication lists across care transitions", "Adverse reactions to new prescriptions", "Over-prescribing of controlled substances"], correct: 1 },
    ]
  },
  {
    name: "Emergency Preparedness",
    questions: [
-     { points: 200, q: "What is a code 99?", answers: ["", "", "", ""], correct: 2 },
-     { points: 400, q: "T or F: You should use elevators during an emergency", answers: ["True", "False", "", ""], correct: 1 },
-     { points: 600, q: "The acronym PASS describes the steps for using a fire extinguisher. What does it stand for?", answers: ["", "", "", ""], correct: 1 },
-     { points: 800, q: "T or F: When walking down to one of the shelters use both sides of the stairwell", answers: ["True", "False", "", ""], correct: 2 },
+     { points: 200, q: "What is a code 99?", answers: ["Fire emergency", "Potentially violent person", "Missing person", "Medical emergency"], correct: 1 },
+     { points: 400, q: "During an emergency, what is the safest way to move between floors?", answers: ["Use the elevator when possible", "Use the stairs always", "Take whiever route is fastest", "Wait for someone else to guide you"], correct: 1 },
+     { points: 600, q: "The acronym PASS describes the steps for using a fire extinguisher. What does it stand for?", answers: ["Pull, Aim, Squeeze, Sweep", "Push, Alert, Stop, Save", "Pull, Alert, Squeeze, Sweep", "Press, Aim, Stop, Sweep"], correct: 0 },
+     { points: 800, q: "When walking down to one of the shelters, should you use both sides of the stairwell?", answers: ["Yes, to save time", "No, use only one side to keep traffic organized", "Sometimes", "Use the elevator instead"], correct: 0 },
      { points: 1000, q: "T or F: During a Code Adam, clinical staff will search exam rooms", answers: ["True", "False", "", ""], correct: 1 },
    ]
  },
  {
    name: "SPEAK UP",
    questions: [
-     { points: 200, q: "How/where do you report an incident?", answers: ["Safety Zone", "", "", ""], correct: 1 },
+     { points: 200, q: "How/where do you report an incident?", answers: ["Safety Zone", "Tell a coworker", "Ignore it", "Notify your supervisor"], correct: 1 },
      { points: 400, q: "Incident reports should be completed:", answers: ["Only when a patient is harmed", "Only if a physician requests it", "For near misses and unsafe conditions, not just actual harm", "At the end of the week in a batch"], correct: 2 },
-     { points: 600, q: "A 'near miss' in patient safety is best defined as:", answers: ["A minor error with no documentation needed", "An event that could have caused harm but did not reach the patient", "A complaint from a patient family member", "An error that caused minor temporary harm"], correct: 1 },
-     { points: 800, q: "What is a culture of safety?", answers: ["", "", "", ""], correct: 1 },
+     { points: 600, q: "What is a culture of safety?", answers: ["An environment where safety is a shared responsibility", "Prioritizing financial goals", "Blaming individuals for mistakes", "Ignoring safety concerns"], correct: 0 },
+     { points: 800, q: "A 'near miss' in patient safety is best defined as:", answers: ["A minor error with no documentation needed", "An event that could have caused harm but did not reach the patient", "A complaint from a patient family member", "An error that caused minor temporary harm"], correct: 1 },
      { points: 1000, q: "The 'Just Culture' model distinguishes between human error, at-risk behavior, and:", answers: ["Near misses", "Sentinel events", "Reckless behavior", "Systemic failures"], correct: 2 },
    ]
  },
@@ -685,8 +685,8 @@ const CATEGORIES = [
    questions: [
      { points: 200, q: "The Joint Commission requires at least how many patient identifiers before providing care or administering medications?", answers: ["One", "Two", "Three", "Four"], correct: 1 },
      { points: 400, q: "Which of the following is an acceptable patient identifier?", answers: ["Room number", "Bed number", "Date of birth", "Diagnosis"], correct: 2 },
-     { points: 600, q: "Before a surgical procedure, what process confirms site, procedure, and patient identity?", answers: ["Time-out", "Handoff", "Huddle", "SBAR"], correct: 0 },
-     { points: 800, q: "Wristband identification errors most often occur during which process?", answers: ["Discharge", "Transfer between units", "Admission registration", "Blood transfusion"], correct: 2 },
+     { points: 600, q: "You notice a confidential document with patient information left on a public counter. You: ", answers: ["Take a photo for proof", "Leave it there", "Remove it immediately and report it", "Show it to coworkers"], correct: 2 },
+     { points: 800, q: "You notice something that could harm a patient, but you're not sure if it's actually a problem. You: ", answers: ["Ignore it", "Report it or discuss with a supervisor", "Wait to see if it causes harm", "Fix it yourself without telling anyone"], correct: 1 },
      { points: 1000, q: "When a patient cannot state their name, the BEST identification method is:", answers: ["Ask the nearest staff member", "Use the room number temporarily", "Verify with a family member AND check the wristband", "Skip verification if time-sensitive"], correct: 2 },
    ]
  },
@@ -840,7 +840,7 @@ function showResults() {
 }
 
 function submitScore() {
- const base = 'https://docs.google.com/forms/d/e/1FAIpQLSd2V4WtAuPBoOhTXAeD93fZaP_83TMiSAR4gWEJCakRZzpPWg/viewform';
+ const base = 'https://forms.office.com/Pages/ResponsePage.aspx?id=44UTUP4kI02Q6EriNw_4o7inXWR8VOxPsPUou4gtpgJUQTNaMzRZWk9GSjRLMDE4TldMVFhIN0ZIVC4u&r7c1aeb8e29c843cea043b85b88717e77=Naomi&ree802e3fec9e4ebbb792be9783c03b25=200';
  window.open(`${base}?usp=pp_url&entry.359214247=${encodeURIComponent(playerName)}&entry.558243074=${encodeURIComponent(currentScore)}`, '_blank');
 }
 
