@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Safety Jeopardy — PSA Week 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+ :root {
+   --navy: #060d1f;
+   --blue: #0e2a6e;
+   --blue-bright: #1a4db5;
+   --gold: #f5c518;
+   --gold-light: #ffe566;
+   --gold-dark: #c49a00;
+   --white: #ffffff;
+   --correct: #00e676;
+   --wrong: #ff3d57;
+   --card-bg: #0d1f4a;
+   --card-hover: #162e68;
+ }
+
+ * { margin: 0; padding: 0; box-sizing: border-box; }
+
+ body {
+   background: var(--navy);
+   color: var(--white);
+   font-family: 'DM Sans', sans-serif;
+   min-height: 100vh;
+   overflow-x: hidden;
+ }
+
+ body::before {
+   content: '';
+   position: fixed;
+   inset: 0;
+   background:
+     radial-gradient(ellipse 60% 40% at 20% 0%, rgba(26,77,181,0.3) 0%, transparent 70%),
+     radial-gradient(ellipse 50% 35% at 80% 100%, rgba(245,197,24,0.15) 0%, transparent 70%),
+     radial-gradient(ellipse 40% 60% at 100% 40%, rgba(26,77,181,0.2) 0%, transparent 70%);
+   pointer-events: none;
+   z-index: 0;
+ }
+
+ body::after {
+   content: '';
+   position: fixed;
+   inset: 0;
+   background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+   pointer-events: none;
+   z-index: 0;
+ }
+
+ #app { position: relative; z-index: 1; }
+
+ .screen { display: none; min-height: 100vh; padding: 2rem; }
+ .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+ /* ── NAME SCREEN ── */
+ #name-screen { text-align: center; gap: 1.8rem; }
+
+ .live-tag {
+   display: inline-flex;
+   align-items: center;
+   gap: 0.5rem;
+   background: var(--wrong);
+   color: white;
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 0.85rem;
+   letter-spacing: 0.2em;
+   padding: 0.35rem 1rem;
+   border-radius: 3px;
+   animation: blink 2s step-end infinite;
+ }
+
+ .live-tag::before { content: '●'; font-size: 0.55rem; animation: blink 1s step-end infinite; }
+
+ @keyframes blink { 50% { opacity: 0.3; } }
+
+ .show-title {
+   font-family: 'Bebas Neue', sans-serif;
+   line-height: 0.87;
+   letter-spacing: 0.04em;
+ }
+
+ .show-title .t1 {
+   display: block;
+   font-size: clamp(3rem, 9vw, 6.5rem);
+   color: var(--white);
+ }
+
+ .show-title .t2 {
+   display: block;
+   font-size: clamp(4rem, 12vw, 9rem);
+   color: var(--gold);
+   -webkit-text-stroke: 2px var(--gold-dark);
+   text-shadow: 0 0 80px rgba(245,197,24,0.5), 0 6px 30px rgba(0,0,0,0.6);
+ }
+
+ .show-title .t3 {
+   display: block;
+   font-size: clamp(1.2rem, 3vw, 2rem);
+   color: rgba(255,255,255,0.6);
+   letter-spacing: 0.3em;
+   margin-top: 0.3rem;
+ }
+
+ .tagline {
+   background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%);
+   border: 1px solid rgba(245,197,24,0.3);
+   border-radius: 30px;
+   padding: 0.5rem 1.5rem;
+   font-size: 0.82rem;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+   color: rgba(255,255,255,0.75);
+   box-shadow: 0 0 20px rgba(26,77,181,0.3);
+ }
+
+ .rules-card {
+   background: linear-gradient(135deg, rgba(13,31,74,0.97) 0%, rgba(14,42,110,0.92) 100%);
+   border: 1px solid rgba(245,197,24,0.22);
+   border-radius: 14px;
+   padding: 1.6rem 2.2rem;
+   max-width: 500px;
+   width: 100%;
+   text-align: left;
+   display: flex;
+   flex-direction: column;
+   gap: 0.9rem;
+   box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(245,197,24,0.12);
+ }
+
+ .rule { display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.92rem; color: rgba(255,255,255,0.82); line-height: 1.55; }
+
+ .rule-num {
+   background: var(--gold);
+   color: var(--navy);
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 0.95rem;
+   width: 24px; height: 24px;
+   border-radius: 50%;
+   display: flex; align-items: center; justify-content: center;
+   flex-shrink: 0;
+   box-shadow: 0 0 10px rgba(245,197,24,0.4);
+ }
+
+ .name-row { display: flex; gap: 0.75rem; width: 100%; max-width: 500px; }
+
+ input[type="text"] {
+   flex: 1;
+   background: rgba(13,31,74,0.95);
+   border: 1px solid rgba(245,197,24,0.35);
+   border-radius: 10px;
+   color: var(--white);
+   font-family: 'DM Sans', sans-serif;
+   font-size: 1rem;
+   padding: 1rem 1.3rem;
+   outline: none;
+   transition: border-color 0.2s, box-shadow 0.2s;
+ }
+
+ input[type="text"]:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,197,24,0.18), 0 0 20px rgba(245,197,24,0.1); }
+ input[type="text"]::placeholder { color: rgba(255,255,255,0.22); }
+
+ .btn {
+   background: linear-gradient(145deg, var(--gold-light) 0%, var(--gold) 40%, var(--gold-dark) 100%);
+   color: var(--navy);
+   border: none;
+   border-radius: 10px;
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 1.2rem;
+   letter-spacing: 0.1em;
+   padding: 1rem 2.2rem;
+   cursor: pointer;
+   transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+   white-space: nowrap;
+   box-shadow: 0 4px 20px rgba(245,197,24,0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+   position: relative;
+   overflow: hidden;
+   font-weight: 700;
+ }
+
+ .btn::before {
+   content: '';
+   position: absolute;
+   top: 0; left: -100%;
+   width: 60%;
+   height: 100%;
+   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+   transition: left 0.4s;
+ }
+
+ .btn:hover::before { left: 150%; }
+ .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,197,24,0.5); filter: brightness(1.06); }
+ .btn:active { transform: translateY(0); }
+
+ /* ── BOARD SCREEN ── */
+ #board-screen { padding: 1.5rem; gap: 1.2rem; }
+
+ .board-header {
+   width: 100%;
+   max-width: 960px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   background: linear-gradient(135deg, #0a1f5e 0%, var(--blue-bright) 100%);
+   border: 1px solid rgba(245,197,24,0.25);
+   border-radius: 12px;
+   padding: 1rem 1.8rem;
+   box-shadow: 0 6px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.07);
+ }
+
+ .board-title {
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 1.6rem;
+   letter-spacing: 0.1em;
+   color: var(--gold);
+   text-shadow: 0 0 20px rgba(245,197,24,0.4);
+ }
+
+ .picks-tracker { display: flex; align-items: center; gap: 0.7rem; }
+
+ .pick-dot {
+   width: 18px; height: 18px;
+   border-radius: 50%;
+   border: 2px solid var(--gold);
+   background: transparent;
+   transition: background 0.35s, box-shadow 0.35s, transform 0.2s;
+ }
+
+ .pick-dot.filled { background: var(--gold); box-shadow: 0 0 12px rgba(245,197,24,0.8); }
+ .pick-dot.popping { animation: dotPop 0.35s ease; }
+
+ @keyframes dotPop {
+   0% { transform: scale(1); }
+   50% { transform: scale(1.5); }
+   100% { transform: scale(1); }
+ }
+
+ .picks-label { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-left: 0.4rem; letter-spacing: 0.04em; }
+
+ .score-display {
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 2rem;
+   color: var(--gold);
+   letter-spacing: 0.05em;
+   text-shadow: 0 0 24px rgba(245,197,24,0.55);
+   transition: transform 0.2s;
+ }
+
+ .score-display.bump { animation: scoreBump 0.3s ease; }
+
+ @keyframes scoreBump {
+   0% { transform: scale(1); }
+   50% { transform: scale(1.2); }
+   100% { transform: scale(1); }
+ }
+
+ .board {
+   width: 100%;
+   max-width: 960px;
+   display: grid;
+   grid-template-columns: repeat(5, 1fr);
+   gap: 9px;
+ }
+
+ .cat-header {
+   background: linear-gradient(180deg, var(--blue-bright) 0%, #0b2060 100%);
+   border: 1px solid rgba(245,197,24,0.22);
+   border-radius: 9px;
+   padding: 1rem 0.5rem;
+   text-align: center;
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 1.05rem;
+   letter-spacing: 0.08em;
+   color: var(--gold);
+   line-height: 1.2;
+   box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+ }
+
+ .q-cell {
+   background: linear-gradient(180deg, #0d1f4a 0%, #080f2a 100%);
+   border: 1px solid rgba(245,197,24,0.1);
+   border-radius: 9px;
+   height: 84px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+   transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s, border-color 0.15s;
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 1.75rem;
+   color: var(--gold);
+   letter-spacing: 0.05em;
+   position: relative;
+   overflow: hidden;
+   text-shadow: 0 0 18px rgba(245,197,24,0.45);
+ }
+
+ .q-cell::before {
+   content: '';
+   position: absolute;
+   inset: 0;
+   background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 55%);
+   pointer-events: none;
+ }
+
+ .q-cell:hover:not(.used):not(.locked) {
+   border-color: rgba(245,197,24,0.55);
+   transform: translateY(-4px) scale(1.03);
+   box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 24px rgba(245,197,24,0.18);
+   background: linear-gradient(180deg, #162e68 0%, #0e1e45 100%);
+ }
+
+ .q-cell.used {
+   background: rgba(8,15,42,0.5);
+   border-color: rgba(255,255,255,0.04);
+   cursor: default;
+   color: transparent;
+   text-shadow: none;
+ }
+
+ .q-cell.used::after { content: '✓'; color: rgba(0,230,118,0.35); font-size: 1.4rem; position: absolute; text-shadow: none; }
+ .q-cell.locked:not(.used) { cursor: not-allowed; opacity: 0.25; }
+
+ /* ── MODAL ── */
+ .modal-overlay {
+   display: none;
+   position: fixed;
+   inset: 0;
+   background: rgba(6,13,31,0.93);
+   backdrop-filter: blur(8px);
+   z-index: 100;
+   align-items: center;
+   justify-content: center;
+   padding: 2rem;
+ }
+
+ .modal-overlay.active { display: flex; }
+
+ .modal {
+   background: linear-gradient(160deg, #0f2660 0%, #080f2a 100%);
+   border: 1px solid rgba(245,197,24,0.28);
+   border-radius: 18px;
+   max-width: 600px;
+   width: 100%;
+   padding: 2.8rem;
+   display: flex;
+   flex-direction: column;
+   gap: 1.6rem;
+   box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(245,197,24,0.08), inset 0 1px 0 rgba(255,255,255,0.07);
+   animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+ }
+
+ @keyframes modalIn {
+   from { transform: scale(0.8) translateY(30px); opacity: 0; }
+   to { transform: scale(1) translateY(0); opacity: 1; }
+ }
+
+ .modal-points {
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 3rem;
+   color: var(--gold);
+   letter-spacing: 0.05em;
+   line-height: 1;
+   text-shadow: 0 0 40px rgba(245,197,24,0.55);
+ }
+
+ .modal-category {
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 0.95rem;
+   color: rgba(255,255,255,0.45);
+   letter-spacing: 0.15em;
+   margin-top: 0.2rem;
+ }
+
+ .modal-question { font-size: 1.25rem; line-height: 1.7; color: var(--white); font-weight: 500; }
+
+ .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+
+ .answer-btn {
+   background: rgba(14,42,110,0.45);
+   border: 1px solid rgba(245,197,24,0.15);
+   border-radius: 12px;
+   color: var(--white);
+   font-family: 'DM Sans', sans-serif;
+   font-size: 0.95rem;
+   font-weight: 500;
+   padding: 1.1rem 1rem;
+   cursor: pointer;
+   transition: background 0.15s, border-color 0.15s, transform 0.1s;
+   text-align: left;
+   line-height: 1.45;
+   position: relative;
+   overflow: hidden;
+ }
+
+ .answer-btn:hover { background: rgba(26,77,181,0.55); border-color: rgba(245,197,24,0.38); transform: translateY(-2px); }
+
+ .answer-btn.correct {
+   background: rgba(0,230,118,0.14);
+   border-color: var(--correct);
+   border-width: 2px;
+   color: var(--correct);
+   animation: correctFlash 0.5s ease;
+ }
+
+ @keyframes correctFlash {
+   0% { transform: scale(1); box-shadow: none; }
+   30% { transform: scale(1.05); box-shadow: 0 0 30px rgba(0,230,118,0.5); }
+   100% { transform: scale(1); box-shadow: 0 0 10px rgba(0,230,118,0.2); }
+ }
+
+ .answer-btn.wrong {
+   background: rgba(255,61,87,0.1);
+   border-color: rgba(255,61,87,0.35);
+   border-width: 2px;
+   color: rgba(255,255,255,0.28);
+   animation: wrongShake 0.45s ease;
+ }
+
+ @keyframes wrongShake {
+   0%, 100% { transform: translateX(0); }
+   15% { transform: translateX(-8px); }
+   35% { transform: translateX(7px); }
+   55% { transform: translateX(-5px); }
+   75% { transform: translateX(4px); }
+ }
+
+ .feedback-bar {
+   border-radius: 10px;
+   padding: 0.95rem 1.2rem;
+   font-weight: 600;
+   font-size: 1rem;
+   display: none;
+   animation: feedbackIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+ }
+
+ @keyframes feedbackIn {
+   from { opacity: 0; transform: translateY(8px) scale(0.97); }
+   to { opacity: 1; transform: translateY(0) scale(1); }
+ }
+
+ .feedback-bar.correct { background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.35); color: var(--correct); display: block; }
+ .feedback-bar.wrong { background: rgba(255,61,87,0.08); border: 1px solid rgba(255,61,87,0.28); color: #ff7085; display: block; }
+
+ .modal-footer { display: flex; justify-content: flex-end; }
+
+ /* ── RESULT SCREEN ── */
+ #result-screen { text-align: center; gap: 2rem; }
+
+ .result-eyebrow { font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+
+ .result-score {
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: clamp(5.5rem, 16vw, 11rem);
+   color: var(--gold);
+   line-height: 1;
+   text-shadow: 0 0 100px rgba(245,197,24,0.55), 0 8px 40px rgba(0,0,0,0.6);
+   animation: scoreReveal 0.7s cubic-bezier(0.34,1.56,0.64,1);
+ }
+
+ @keyframes scoreReveal {
+   from { transform: scale(0.4) rotateX(20deg); opacity: 0; }
+   to { transform: scale(1) rotateX(0); opacity: 1; }
+ }
+
+ .result-summary {
+   display: flex;
+   background: linear-gradient(135deg, rgba(13,31,74,0.97) 0%, rgba(14,42,110,0.92) 100%);
+   border: 1px solid rgba(245,197,24,0.18);
+   border-radius: 14px;
+   overflow: hidden;
+   box-shadow: 0 10px 40px rgba(0,0,0,0.45);
+ }
+
+ .result-stat {
+   flex: 1;
+   padding: 1.4rem 1rem;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 0.35rem;
+   border-right: 1px solid rgba(245,197,24,0.08);
+ }
+
+ .result-stat:last-child { border-right: none; }
+ .result-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--white); line-height: 1; }
+ .result-stat-label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.38); }
+
+ /* Submit card */
+ .submit-card {
+   background: linear-gradient(145deg, #0e2357 0%, #091535 100%);
+   border: 1px solid rgba(245,197,24,0.28);
+   border-radius: 20px;
+   padding: 2.5rem 3rem;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 1.1rem;
+   max-width: 460px;
+   width: 100%;
+   box-shadow: 0 16px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(245,197,24,0.08), inset 0 1px 0 rgba(255,255,255,0.06);
+   animation: cardSlideUp 0.5s 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+ }
+
+ @keyframes cardSlideUp {
+   from { opacity: 0; transform: translateY(30px); }
+   to { opacity: 1; transform: translateY(0); }
+ }
+
+ .submit-icon { font-size: 3rem; animation: trophyBounce 1s 0.8s ease infinite alternate; }
+
+ @keyframes trophyBounce {
+   from { transform: translateY(0); }
+   to { transform: translateY(-6px); }
+ }
+
+ .submit-title {
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 1.9rem;
+   letter-spacing: 0.06em;
+   color: var(--gold);
+   text-shadow: 0 0 30px rgba(245,197,24,0.4);
+ }
+
+ .submit-desc { font-size: 0.9rem; color: rgba(255,255,255,0.5); text-align: center; line-height: 1.65; max-width: 320px; }
+
+ .submit-btn-full { width: 100%; padding: 1.2rem; font-size: 1.3rem; margin-top: 0.3rem; }
+
+ /* ── SCORE FLASH ── */
+ .score-flash {
+   position: fixed;
+   top: 45%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   font-family: 'Bebas Neue', sans-serif;
+   font-size: 6rem;
+   pointer-events: none;
+   z-index: 150;
+   animation: flashAway 0.9s ease forwards;
+   letter-spacing: 0.05em;
+ }
+
+ .score-flash.positive { color: var(--correct); text-shadow: 0 0 60px rgba(0,230,118,0.9); }
+ .score-flash.negative { color: var(--wrong); text-shadow: 0 0 60px rgba(255,61,87,0.9); }
+
+ @keyframes flashAway {
+   0% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+   25% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+   70% { opacity: 1; transform: translate(-50%, -90%) scale(1); }
+   100% { opacity: 0; transform: translate(-50%, -130%) scale(0.8); }
+ }
+
+ #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 200; }
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div id="app">
+
+ <!-- NAME SCREEN -->
+ <div id="name-screen" class="screen active">
+   <div class="live-tag">LIVE &nbsp;·&nbsp; Patient Safety Awareness Week</div>
+   <div class="show-title">
+     <span class="t1">Patient</span>
+     <span class="t2">Safety</span>
+     <span class="t3">Jeopardy</span>
+   </div>
+   <div class="tagline">Pick 3 Questions &nbsp;·&nbsp; Score Big &nbsp;·&nbsp; Climb the Board</div>
+   <div class="rules-card">
+     <div class="rule"><span class="rule-num">1</span><span>Choose <strong>exactly 3 questions</strong> from the board — go big or play it safe.</span></div>
+     <div class="rule"><span class="rule-num">2</span><span>Answer correctly to <strong>earn the points</strong>. Wrong answers earn nothing.</span></div>
+     <div class="rule"><span class="rule-num">3</span><span>Submit your score to the <strong>leaderboard</strong> when you're done!</span></div>
+   </div>
+   <div class="name-row">
+     <input type="text" id="player-name" placeholder="Enter your name to play" maxlength="30" />
+     <button class="btn" onclick="startGame()">Let's Go →</button>
+   </div>
+ </div>
+
+ <!-- BOARD SCREEN -->
+ <div id="board-screen" class="screen">
+   <div class="board-header">
+     <div class="board-title">🎯 The Board</div>
+     <div class="picks-tracker">
+       <div class="pick-dot filled" id="dot-0"></div>
+       <div class="pick-dot filled" id="dot-1"></div>
+       <div class="pick-dot filled" id="dot-2"></div>
+       <span class="picks-label">picks left: <span id="picks-left">3</span></span>
+     </div>
+     <div class="score-display" id="score-display">$<span id="live-score">0</span></div>
+   </div>
+   <div class="board" id="board"></div>
+ </div>
+
+ <!-- RESULT SCREEN -->
+ <div id="result-screen" class="screen">
+   <p class="result-eyebrow">Final Score</p>
+   <div class="result-score">$<span id="final-score">0</span></div>
+   <div class="result-summary">
+     <div class="result-stat">
+       <div class="result-stat-num" id="res-correct">0</div>
+       <div class="result-stat-label">Correct</div>
+     </div>
+     <div class="result-stat">
+       <div class="result-stat-num" id="res-wrong">0</div>
+       <div class="result-stat-label">Wrong</div>
+     </div>
+     <div class="result-stat">
+       <div class="result-stat-num" id="res-earned">$0</div>
+       <div class="result-stat-label">Earned</div>
+     </div>
+   </div>
+   <div class="submit-card">
+     <div class="submit-icon">🏆</div>
+     <div class="submit-title">Post Your Score!</div>
+     <div class="submit-desc">Your name and score are pre-filled — just open the form and hit submit to get on the board.</div>
+     <button class="btn submit-btn-full" onclick="submitScore()">Submit to Leaderboard →</button>
+   </div>
+ </div>
+
+ <!-- MODAL -->
+ <div class="modal-overlay" id="modal">
+   <div class="modal">
+     <div>
+       <div class="modal-points" id="modal-points">$200</div>
+       <div class="modal-category" id="modal-cat">Category</div>
+     </div>
+     <div class="modal-question" id="modal-q"></div>
+     <div class="answers-grid" id="answers-grid"></div>
+     <div class="feedback-bar" id="feedback"></div>
+     <div class="modal-footer">
+       <button class="btn" id="modal-next-btn" onclick="closeModal()" style="display:none">Continue →</button>
+     </div>
+   </div>
+ </div>
+
+</div>
+<script>
+const CATEGORIES = [
+ {
+   name: "Infection Control",
+   questions: [
+     { points: 200, q: "What is the most effective procedure for preventing infection?", answers: ["", "", "Hand Sanitizer", "Washing hands with soap and water"], correct: 4 },
+     { points: 400, q: "Items like door handles, waiting room chairs, and check in counters are considered this type of surface", answers: ["", "", "", ""], correct: 2 },
+     { points: 600, q: "PPE may be donned in any order but _____ must be donned last", answers: ["", "Gloves", "", ""], correct: 2 },
+     { points: 800, q: "Shared equipment like blood pressure cuffs, stethoscopes, and exam chairs should be cleaned how often?", answers: ["", "", "", ""], correct: 3 },
+     { points: 1000, q: "The sharps container must be changed out/replaced when it reaches the ____", answers: ["", "", "", ""], correct: 1 },
+   ]
+ },
+ {
+   name: "Medication Safety",
+   questions: [
+     { points: 200, q: "Before giving a medication, staff should confirm a patient using at least two of these", answers: ["", "", "", ""], correct: 1 },
+     { points: 400, q: "The 'Five Rights' of medication administration include right patient, drug, dose, route, and what else?", answers: ["Right color", "Right time", "Right temperature", "Right physician"], correct: 1 },
+     { points: 600, q: "Medications left unattended in public or patient areas should be: ", answers: ["", "", "", ""], correct: 2 },
+     { points: 800, q: "", answers: ["", "", "", ""], correct: 1 },
+     { points: 1000, q: "What is 'medication reconciliation' primarily designed to prevent?", answers: ["Drug diversion by staff", "Discrepancies between medication lists across care transitions", "Adverse reactions to new prescriptions", "Over-prescribing of controlled substances"], correct: 1 },
+   ]
+ },
+ {
+   name: "Emergency Preparedness",
+   questions: [
+     { points: 200, q: "What is a code 99?", answers: ["", "", "", ""], correct: 2 },
+     { points: 400, q: "T or F: You should use elevators during an emergency", answers: ["True", "False", "", ""], correct: 1 },
+     { points: 600, q: "The acronym PASS describes the steps for using a fire extinguisher. What does it stand for?", answers: ["", "", "", ""], correct: 1 },
+     { points: 800, q: "T or F: When walking down to one of the shelters use both sides of the stairwell", answers: ["True", "False", "", ""], correct: 2 },
+     { points: 1000, q: "T or F: During a Code Adam, clinical staff will search exam rooms", answers: ["True", "False", "", ""], correct: 1 },
+   ]
+ },
+ {
+   name: "SPEAK UP",
+   questions: [
+     { points: 200, q: "How/where do you report an incident?", answers: ["Safety Zone", "", "", ""], correct: 1 },
+     { points: 400, q: "Incident reports should be completed:", answers: ["Only when a patient is harmed", "Only if a physician requests it", "For near misses and unsafe conditions, not just actual harm", "At the end of the week in a batch"], correct: 2 },
+     { points: 600, q: "A 'near miss' in patient safety is best defined as:", answers: ["A minor error with no documentation needed", "An event that could have caused harm but did not reach the patient", "A complaint from a patient family member", "An error that caused minor temporary harm"], correct: 1 },
+     { points: 800, q: "What is a culture of safety?", answers: ["", "", "", ""], correct: 1 },
+     { points: 1000, q: "The 'Just Culture' model distinguishes between human error, at-risk behavior, and:", answers: ["Near misses", "Sentinel events", "Reckless behavior", "Systemic failures"], correct: 2 },
+   ]
+ },
+ {
+   name: "WWYD?",
+   questions: [
+     { points: 200, q: "The Joint Commission requires at least how many patient identifiers before providing care or administering medications?", answers: ["One", "Two", "Three", "Four"], correct: 1 },
+     { points: 400, q: "Which of the following is an acceptable patient identifier?", answers: ["Room number", "Bed number", "Date of birth", "Diagnosis"], correct: 2 },
+     { points: 600, q: "Before a surgical procedure, what process confirms site, procedure, and patient identity?", answers: ["Time-out", "Handoff", "Huddle", "SBAR"], correct: 0 },
+     { points: 800, q: "Wristband identification errors most often occur during which process?", answers: ["Discharge", "Transfer between units", "Admission registration", "Blood transfusion"], correct: 2 },
+     { points: 1000, q: "When a patient cannot state their name, the BEST identification method is:", answers: ["Ask the nearest staff member", "Use the room number temporarily", "Verify with a family member AND check the wristband", "Skip verification if time-sensitive"], correct: 2 },
+   ]
+ },
+];
+
+let playerName = '';
+let picksRemaining = 3;
+let currentScore = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let currentQuestion = null;
+let answered = false;
+
+function showScreen(id) {
+ document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+}
+
+function startGame() {
+ const v = document.getElementById('player-name').value.trim();
+ if (!v) { document.getElementById('player-name').focus(); return; }
+ playerName = v;
+ picksRemaining = 3;
+ currentScore = 0;
+ correctCount = 0;
+ wrongCount = 0;
+ buildBoard();
+ updatePicksUI();
+ showScreen('board-screen');
+}
+
+function buildBoard() {
+ const board = document.getElementById('board');
+ board.innerHTML = '';
+ CATEGORIES.forEach(cat => {
+   const h = document.createElement('div');
+   h.className = 'cat-header';
+   h.textContent = cat.name;
+   board.appendChild(h);
+ });
+ [200, 400, 600, 800, 1000].forEach((pts, rowIdx) => {
+   CATEGORIES.forEach((cat, colIdx) => {
+     const cell = document.createElement('div');
+     cell.className = 'q-cell';
+     cell.textContent = '$' + pts;
+     cell.onclick = () => openQuestion(colIdx, rowIdx, cell);
+     board.appendChild(cell);
+   });
+ });
+}
+
+function openQuestion(catIdx, rowIdx, cell) {
+ if (picksRemaining === 0 || cell.classList.contains('used') || cell.classList.contains('locked')) return;
+ const cat = CATEGORIES[catIdx];
+ const q = cat.questions[rowIdx];
+ currentQuestion = { q, cell };
+ answered = false;
+
+ document.getElementById('modal-points').textContent = '$' + q.points;
+ document.getElementById('modal-cat').textContent = cat.name;
+ document.getElementById('modal-q').textContent = q.q;
+
+ const grid = document.getElementById('answers-grid');
+ grid.innerHTML = '';
+ q.answers.forEach((ans, i) => {
+   const btn = document.createElement('button');
+   btn.className = 'answer-btn';
+   btn.textContent = ans;
+   btn.onclick = () => selectAnswer(i);
+   grid.appendChild(btn);
+ });
+
+ document.getElementById('feedback').className = 'feedback-bar';
+ document.getElementById('feedback').textContent = '';
+ document.getElementById('modal-next-btn').style.display = 'none';
+ document.getElementById('modal').classList.add('active');
+}
+
+function selectAnswer(idx) {
+ if (answered) return;
+ answered = true;
+
+ const { q, cell } = currentQuestion;
+ const buttons = document.querySelectorAll('.answer-btn');
+ const feedback = document.getElementById('feedback');
+
+ buttons.forEach((btn, i) => {
+   btn.onclick = null;
+   if (i === q.correct) btn.classList.add('correct');
+   else if (i === idx) btn.classList.add('wrong');
+ });
+
+ if (idx === q.correct) {
+   currentScore += q.points;
+   correctCount++;
+   feedback.textContent = '✓ Correct! +$' + q.points;
+   feedback.className = 'feedback-bar correct';
+   showFlash('+$' + q.points, true);
+ } else {
+   wrongCount++;
+   feedback.textContent = '✗ Not quite — the answer was: ' + q.answers[q.correct];
+   feedback.className = 'feedback-bar wrong';
+   showFlash('✗', false);
+ }
+
+ cell.classList.add('used');
+ picksRemaining--;
+
+ const dot = document.getElementById('dot-' + picksRemaining);
+ if (dot) { dot.classList.remove('filled'); dot.classList.add('popping'); setTimeout(() => dot.classList.remove('popping'), 400); }
+
+ updatePicksUI();
+ document.getElementById('modal-next-btn').style.display = 'block';
+}
+
+function showFlash(text, positive) {
+ const el = document.createElement('div');
+ el.className = 'score-flash ' + (positive ? 'positive' : 'negative');
+ el.textContent = text;
+ document.body.appendChild(el);
+ setTimeout(() => el.remove(), 1000);
+}
+
+function closeModal() {
+ document.getElementById('modal').classList.remove('active');
+ const sd = document.getElementById('score-display');
+ document.getElementById('live-score').textContent = currentScore.toLocaleString();
+ sd.classList.remove('bump');
+ void sd.offsetWidth;
+ sd.classList.add('bump');
+ if (picksRemaining === 0) setTimeout(showResults, 500);
+}
+
+function updatePicksUI() {
+ document.getElementById('picks-left').textContent = picksRemaining;
+ for (let i = 0; i < 3; i++) {
+   document.getElementById('dot-' + i).classList.toggle('filled', i < picksRemaining);
+ }
+ if (picksRemaining === 0) {
+   document.querySelectorAll('.q-cell:not(.used)').forEach(c => c.classList.add('locked'));
+ }
+}
+
+function showResults() {
+ document.getElementById('final-score').textContent = currentScore.toLocaleString();
+ document.getElementById('res-correct').textContent = correctCount;
+ document.getElementById('res-wrong').textContent = wrongCount;
+ document.getElementById('res-earned').textContent = '$' + currentScore.toLocaleString();
+ showScreen('result-screen');
+ if (currentScore > 0) setTimeout(launchConfetti, 300);
+}
+
+function submitScore() {
+ const base = 'https://docs.google.com/forms/d/e/1FAIpQLSd2V4WtAuPBoOhTXAeD93fZaP_83TMiSAR4gWEJCakRZzpPWg/viewform';
+ window.open(`${base}?usp=pp_url&entry.359214247=${encodeURIComponent(playerName)}&entry.558243074=${encodeURIComponent(currentScore)}`, '_blank');
+}
+
+function launchConfetti() {
+ const canvas = document.getElementById('confetti-canvas');
+ const ctx = canvas.getContext('2d');
+ canvas.width = window.innerWidth;
+ canvas.height = window.innerHeight;
+
+ const colors = ['#f5c518', '#ffe566', '#ffffff', '#1a4db5', '#00e676', '#ff3d57', '#c49a00'];
+ const pieces = Array.from({ length: 150 }, () => ({
+   x: Math.random() * canvas.width,
+   y: -20 - Math.random() * 150,
+   w: 7 + Math.random() * 9,
+   h: 3 + Math.random() * 7,
+   color: colors[Math.floor(Math.random() * colors.length)],
+   vx: (Math.random() - 0.5) * 5,
+   vy: 2.5 + Math.random() * 4.5,
+   angle: Math.random() * Math.PI * 2,
+   spin: (Math.random() - 0.5) * 0.25,
+   opacity: 1,
+ }));
+
+ let frame = 0;
+ function draw() {
+   ctx.clearRect(0, 0, canvas.width, canvas.height);
+   pieces.forEach(p => {
+     p.x += p.vx + Math.sin(frame * 0.02 + p.y * 0.01) * 0.5;
+     p.y += p.vy;
+     p.angle += p.spin;
+     if (frame > 90) p.opacity -= 0.007;
+     ctx.save();
+     ctx.globalAlpha = Math.max(0, p.opacity);
+     ctx.translate(p.x, p.y);
+     ctx.rotate(p.angle);
+     ctx.fillStyle = p.color;
+     ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+     ctx.restore();
+   });
+   frame++;
+   if (frame < 180) requestAnimationFrame(draw);
+   else ctx.clearRect(0, 0, canvas.width, canvas.height);
+ }
+ draw();
+}
+
+document.getElementById('player-name').addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
+</script>
+</body>
+</html>
