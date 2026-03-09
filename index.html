@@ -840,16 +840,25 @@ function showResults() {
 }
 
 function submitScore() {
+  // Base URL of your Microsoft Form
   const base = 'https://forms.office.com/Pages/ResponsePage.aspx?id=44UTUP4kI02Q6EriNw_4o7inXWR8VOxPsPUou4gtpgJUNERHTDFNRFlHMk1TSFRPWUlTSjAzTElHSi4u';
-  
+
+  // Get player name and score from your page
+  const playerName = document.getElementById('playerName').value;
+
+  let currentScore = document.getElementById('score').value;
+
+  // Clean the score: remove any non-digit characters
+  currentScore = currentScore.toString().replace(/\D/g, '');
+
   // Build the query parameters
   const params = new URLSearchParams({
     'entry.359214247': playerName,
     'entry.558243074': currentScore
   });
 
-  // Open in a new tab
-  window.open(`${base}&${params.toString()}`, '_blank');
+  // Open the Microsoft Form with the parameters
+  window.open(`${base}?${params.toString()}`, '_blank');
 }
 
 
