@@ -840,17 +840,10 @@ function showResults() {
 }
 
 function submitScore() {
-
- const base = "https://forms.office.com/Pages/ResponsePage.aspx?id=44UTUP4kI02Q6EriNw_4o7inXWR8VOxPsPUou4gtpgJUQTNaMzRZWk9GSjRLMDE4TldMVFhIN0ZIVC4u";
-
- const url =
-  base +
-  "&r7c1aeb8e29c843cea043b85b88717e77=" + encodeURIComponent(playerName) +
-  "&ree802e3fec9e4ebbb792be9783c03b25=" + encodeURIComponent(currentScore);
-
- window.open(url, "_blank");
-
+ const base = 'https://forms.office.com/Pages/ResponsePage.aspx?id=44UTUP4kI02Q6EriNw_4o7inXWR8VOxPsPUou4gtpgJUNERHTDFNRFlHMk1TSFRPWUlTSjAzTElHSi4u&r9c0583f7d51e407d81cd809438d3f2dd=naomi&red4603bc18b74b3895c34de694eb78fb=1800';
+ window.open(`${base}?usp=pp_url&entry.359214247=${encodeURIComponent(playerName)}&entry.558243074=${encodeURIComponent(currentScore)}`, '_blank');
 }
+
 
 function launchConfetti() {
  const canvas = document.getElementById('confetti-canvas');
