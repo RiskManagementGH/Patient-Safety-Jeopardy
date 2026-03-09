@@ -840,8 +840,16 @@ function showResults() {
 }
 
 function submitScore() {
- const base = 'https://forms.office.com/Pages/ResponsePage.aspx?id=44UTUP4kI02Q6EriNw_4o7inXWR8VOxPsPUou4gtpgJUNERHTDFNRFlHMk1TSFRPWUlTSjAzTElHSi4u&r9c0583f7d51e407d81cd809438d3f2dd=naomi&red4603bc18b74b3895c34de694eb78fb=1800';
- window.open(`${base}&entry.359214247=${encodeURIComponent(playerName)}&entry.558243074=${encodeURIComponent(currentScore)}`, '_blank');
+  const base = 'https://forms.office.com/Pages/ResponsePage.aspx?id=44UTUP4kI02Q6EriNw_4o7inXWR8VOxPsPUou4gtpgJUNERHTDFNRFlHMk1TSFRPWUlTSjAzTElHSi4u';
+  
+  // Build the query parameters
+  const params = new URLSearchParams({
+    'entry.359214247': playerName,
+    'entry.558243074': currentScore
+  });
+
+  // Open in a new tab
+  window.open(`${base}&${params.toString()}`, '_blank');
 }
 
 
