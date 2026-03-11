@@ -744,7 +744,7 @@ function openQuestion(catIdx, rowIdx, cell) {
  if (picksRemaining === 0 || cell.classList.contains('used') || cell.classList.contains('locked')) return;
  const cat = CATEGORIES[catIdx];
  const q = cat.questions[rowIdx];
- currentQuestion = { q, cell };
+ currentQuestion = { q, cell, catIdx, rowIdx };
  answered = false;
 
  document.getElementById('modal-points').textContent = '$' + q.points;
