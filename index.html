@@ -699,6 +699,7 @@ let correctCount = 0;
 let wrongCount = 0;
 let currentQuestion = null;
 let answered = false;
+let questionHistory = [];
 
 function showScreen(id) {
  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -713,6 +714,7 @@ function startGame() {
  currentScore = 0;
  correctCount = 0;
  wrongCount = 0;
+ questionHistory = [];
  buildBoard();
  updatePicksUI();
  showScreen('board-screen');
@@ -791,6 +793,10 @@ function selectAnswer(idx) {
    feedback.className = 'feedback-bar wrong';
    showFlash('✗', false);
  }
+ questionHistory.push({
+  label: CATEGORIES[currentQuestion.catIdx].name + ' $' + currentQuestion.q.points,
+  result: idx === currentQuestion.q.correct ? 'Correct' : 'Wrong'
+});
 
  cell.classList.add('used');
  picksRemaining--;
@@ -840,7 +846,18 @@ function showResults() {
 }
 
 function submitScore() {
- window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=44UTUP4kI02Q6EriNw_4o7inXWR8VOxPsPUou4gtpgJUNERHTDFNRFlHMk1TSFRPWUlTSjAzTElHSi4u&r9c0583f7d51e407d81cd809438d3f2dd=naomi%20davis&red4603bc18b74b3895c34de694eb78fb=1800','_blank');
+  const base = 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=44UTUP4kI02Q6EriNw_4o7inXWR8VOxPsPUou4gtpgJUNERHTDFNRFlHMk1TSFRPWUlTSjAzTElHSi4u';
+  const q = questionHistory;
+  const url = base
+    + `&r9c0583f7d51e407d81cd809438d3f2dd=${encodeURIComponent(playerName)}`
+    + `&red4603bc18b74b3895c34de694eb78fb=${encodeURIComponent(currentScore)}`
+    + `&r582a76252bcc4450b3bee12f9fecb4f1=${encodeURIComponent(q[0] ? q[0].label : '')}`
+    + `&r7a147772892b43f780b12d2994a24314=${encodeURIComponent(q[0] ? q[0].result : '')}`
+    + `&r26f9f384b8c74f179de4055858bab8e5=${encodeURIComponent(q[1] ? q[1].label : '')}`
+    + `&r16e9060d91324f3f977513b7ce07ca37=${encodeURIComponent(q[1] ? q[1].result : '')}`
+    + `&r76926de8a14c4fefabb369e591280866=${encodeURIComponent(q[2] ? q[2].label : '')}`
+    + `&r38b420ebbc274f3cbfb0e9c6db8fd468=${encodeURIComponent(q[2] ? q[2].result : '')}`;
+  window.open(url, '_blank');
 }
 
 
